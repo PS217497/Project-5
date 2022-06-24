@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="summa-move-logo.png" />
+    <link rel="stylesheet" href="style.css">
+    <title>Summa Move</title>
+    <meta charset="utf-8" />
+    <style>
+        div,
+        footer,
+        form {
+            margin-top: 20px;
+        }
+
+        input,
+        select {
+            margin-top: 5px;
+            width: 40%;
+            padding: 2px;
+        }
+
+        body {
+            width: 80%;
+            max-width: 800px;
+            margin: auto;
+            margin-top: 50px;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding-right: 10px;
+        }
+
+        div {
+            width: 100%;
+        }
+
+        label {
+            width: 20%;
+            display: inline-block;
+        }
+
+        td:last-child {
+            color: red;
+            cursor: pointer;
+        }
+    </style>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <div class="parent">
+        <div class="div1">
+            <h1>Admin pannel Summa Sport</h1>
+        </div>
+        <div class="div2">
+            <input class="button" type="button" value="users" onclick="UserPage()"></input> 
+            <input class="button" type="button" value="presaties" onclick="PrestatiesPage()"></input>
+            <input class="button" type="button" value="oefeningen" onclick="OefeningenPage()"></input>
+        </div>
+        <div></div>  
+        <div class="div8">
+            <img class="logo-img" src="summa-move-logo.png">
+        </div>
+ 
+        <div class="div5">
+            <div id="oefeningen" style="display: block;">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>instuctienaam</th>
+                            <th>instructie nederlands</th>
+                            <th>instructie engels</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelInhoudoefeningen" />
+                </table>
+                <div id="voegToeContainer">
+                    <label>instructienaam:</label><input type="text" id="Name" required /><br />
+                    <label>nederlandse instructie:</label><input type="text" id="Code" required /><br />
+                    <label>engelse instructie:</label><input type="text" id="Number" required /><br />
+                    <button onclick="voegToeoefening()" type="button">Toevoegen</button>
+                </div>
+            </div>
+            <div id="users" style="display: none;">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>naam</th>
+                            <th>email</th>
+                            <th>instructie engels</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelInhoudusers" />
+                </table>
+                <div id="voegToeContainer">
+                    <label>instructienaam:</label><input type="text" id="Name" required /><br />
+                    <label>nederlandse instructie:</label><input type="text" id="Code" required /><br />
+                    <label>engelse instructie:</label><input type="text" id="Number" required /><br />
+                    <button onclick="voegToeoefening()" type="button">Toevoegen</button>
+                </div>
+            </div>
+            <div id="prestaties" style="display: none;">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>naam</th>
+                            <th>email</th>
+                            <th>instructie engels</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelInhoudprestaties" />
+                </table>
+                <div id="voegToeContainer">
+                    <label>instructienaam:</label><input type="text" id="Name" required /><br />
+                    <label>nederlandse instructie:</label><input type="text" id="Code" required /><br />
+                    <label>engelse instructie:</label><input type="text" id="Number" required /><br />
+                    <button onclick="voegToeoefening()" type="button">Toevoegen</button>
+                </div>
+            </div>
+            <div id="loginContainer" style="display: block;">
+                <form action="javascript:void(0);">
+                    <input type="email" placeholder="mail" id="mail" required>
+                    <input type="password" placeholder="wachtwoord" id="wachtwoord" required>
+                    <button type="submit" onclick="login()">Login</button>
+                </form>
+            </div>
+        </div>
+        <footer>&copy; 2022 Gurkan Tasmurat & Yarno Stevens & Jordy Samuels</footer>
+</body>
+<script>
+    "use strict"
+    const apiBasis = "http://127.0.0.1:8000/api/"
+    const apioefeningen = apiBasis + "oefeningen/"
+    const apiLogin = apiBasis + "login/"
+
+    let constructors = []
+    let json = null
+    let access_token = undefined
+
+
+    const OefeningenPage = async () => {
+        if(access_token != 0){
+            document.getElementById("users").style.display = "none";
+            document.getElementById("oefeningen").style.display = "block";
+            document.getElementById("prestaties").style.display = "none";
+        }
+    }
+    const UserPage = async () => {
+        document.getElementById("oefeningen").style.display = "none";
+        document.getElementById("users").style.display = "block";
+        document.getElementById("prestaties").style.display = "none";
+    }
+    const PrestatiesPage = async () => {
+        document.getElementById("prestaties").style.display = "block";
+        document.getElementById("oefeningen").style.display = "none";
+        document.getElementById("users").style.display = "none";
+    }
+    const login = async () => {
+        const password = document.querySelector("#wachtwoord").value
+        const email = document.querySelector("#mail").value
+        const jsonstring = { "password": password, "email": email }
+        console.log("login: ", jsonstring)
+        const respons = await axios.post(apiLogin, jsonstring, { headers: { 'Content-Type': 'application/json' } })
+        console.log('status code', respons.status)
+        access_token = await respons.data.access_token
+        console.log('access_token: ', access_token)
+        document.getElementById("loginContainer").style.display = "none"
+        document.getElementById("voegToeContainer").style.display = "block"
+        LaadAll()
+    }
+    const LaadAll = async () => {
+        await LaadOefeningen()
+    }
+    const LaadOefeningen = async () => {
+        let tabelInhoud = ''
+        const response = await axios.get(apioefeningen, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + access_token
+            }
+        })
+        json = await response.data
+        access_token = json.access_token
+        json.data.map(el => tabelInhoud += `<tr><td>${el.Name}</td><td>${el.instructie_en}</td><td>${el.instructie_nl}</td><td onclick="verwijder(${el.id})"> x </td></tr>`)
+        document.querySelector("#tabelInhoudoefeningen").innerHTML = tabelInhoud
+    }   
+</script>
+
+</html>

@@ -16,8 +16,8 @@ class CreateOefeningenTable extends Migration
         Schema::create('oefeningen', function (Blueprint $table) {
             $table->id();
             $table->text('Name',);
-            $table->text('instructie-nl',);
-            $table->text('instructie-en',);
+            $table->text('instructie_nl',);
+            $table->text('instructie_en',);
         });
     }
 
