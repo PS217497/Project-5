@@ -18,6 +18,7 @@ use App\Http\Controllers\AuthenticationController;
 
 Route::post('/register', [AuthenticationController::class, 'register']);
 Route::post('/login', [AuthenticationController::class, 'login']);
+Route::get('/publicoefeningen',[OefeningenController::class,'publicindex']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('profile', function(Request $request) {
         return auth()->user();
