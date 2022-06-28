@@ -9,6 +9,6 @@ class prestaties extends Model
 {
     use HasFactory;
     protected $table = 'prestaties';
-    protected $fillable = ['datum','time start','time stop','aantal','oefening_id', 'user_id'];
+    protected $fillable = ['datum','time_start','time_stop', 'user_id','oefening_id','aantal'];
     public $timestamps = false;
 }

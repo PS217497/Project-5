@@ -58,13 +58,13 @@
         <div class="div2">
             <input class="button" type="button" value="oefeningen" onclick="OefeningenPage()"></input>
             <input class="button" type="button" value="presaties" onclick="PrestatiesPage()"></input>
-            <input class="button" type="button" value="users" onclick="UserPage()"></input>
+            <input class="button" type="button" value="users" onclick="UserPage()"></input> 
         </div>
-        <div></div>
+        <div></div>  
         <div class="div8">
             <img class="logo-img" src="summa-move-logo.png">
         </div>
-
+ 
         <div class="div5">
             <div id="oefeningen" style="display: none;">
                 <table class="table table-bordered">
@@ -78,10 +78,10 @@
                     <tbody id="tabelInhoudoefeningen" />
                 </table>
                 <div id="voegToeContainer">
-                    <label>instructienaam:</label><input type="text" id="InstuctieNaam" required /><br />
-                    <label>nederlandse instructie:</label><input type="text" id="Nederlandse_Instructie" required /><br />
-                    <label>engelse instructie:</label><input type="text" id="Engelse_Instructie" required /><br />
-                    <button onclick="VoegtoeOefening()" type="button">Toevoegen</button>
+                    <label>instructienaam:</label><input type="text" id="Name" required /><br />
+                    <label>nederlandse instructie:</label><input type="text" id="Code" required /><br />
+                    <label>engelse instructie:</label><input type="text" id="Number" required /><br />
+                    <button onclick="voegToeoefening()" type="button">Toevoegen</button>
                 </div>
             </div>
             <div id="users" style="display: none;">
@@ -106,20 +106,23 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th>datum</th>
-                            <th>time start</th>
-                            <th>time stop</th>
-                            <th>user id</th>
-                            <th>oefening id</th>
-                            <th>aantal raps</th>
+                            <th>naam</th>
+                            <th>email</th>
+                            <th>instructie engels</th>
                         </tr>
                     </thead>
                     <tbody id="tabelInhoudprestaties" />
                 </table>
+                <div id="voegToeContainer">
+                    <label>instructienaam:</label><input type="text" id="Name" required /><br />
+                    <label>nederlandse instructie:</label><input type="text" id="Code" required /><br />
+                    <label>engelse instructie:</label><input type="text" id="Number" required /><br />
+                    <button onclick="voegToeoefening()" type="button">Toevoegen</button>
+                </div>
             </div>
             <div id="loginContainer" style="display: block;">
                 <form action="javascript:void(0);">
-                    <input type="email" placeholder="email" id="mail" required>
+                    <input type="email" placeholder="mail" id="mail" required>
                     <input type="password" placeholder="wachtwoord" id="wachtwoord" required>
                     <button type="submit" onclick="login()">Login</button>
                 </form>
@@ -131,8 +134,6 @@
     "use strict"
     const apiBasis = "http://127.0.0.1:8000/api/"
     const apioefeningen = apiBasis + "oefeningen/"
-    const apiprestaties = apiBasis + "prestaties/"
-    const apiusers = apiBasis + "users/"
     const apiLogin = apiBasis + "login/"
 
     let constructors = []
@@ -141,74 +142,44 @@
 
 
     const OefeningenPage = async () => {
-        if (access_token != undefined) {
+        if(access_token != undefined){
             document.getElementById("users").style.display = "none";
             document.getElementById("oefeningen").style.display = "block";
             document.getElementById("prestaties").style.display = "none";
         }
     }
     const PrestatiesPage = async () => {
-        if (access_token != undefined) {
+        if(access_token != undefined){
             document.getElementById("prestaties").style.display = "block";
             document.getElementById("oefeningen").style.display = "none";
             document.getElementById("users").style.display = "none";
         }
     }
     const UserPage = async () => {
-        if (access_token != undefined) {
+        if(access_token != undefined){
             document.getElementById("oefeningen").style.display = "none";
             document.getElementById("users").style.display = "block";
             document.getElementById("prestaties").style.display = "none";
         }
     }
-
+    
     const login = async () => {
-        try {
-            const password = document.querySelector("#wachtwoord").value
-            const email = document.querySelector("#mail").value
-            const jsonstring = { "password": password, "email": email }
-            console.log("login: ", jsonstring)
-            const respons = await axios.post(apiLogin, jsonstring, { headers: { 'Content-Type': 'application/json' } })
-            console.log('status code', respons.status)
-            access_token = await respons.data.access_token
-            console.log('access_token: ', access_token)
-            document.getElementById("loginContainer").style.display = "none"
-            document.getElementById("voegToeContainer").style.display = "block"
-            await LaadAll()
-            await OefeningenPage() 
-        } 
-        catch (error) {
-            alert("wachtwoord of email verkeerd probeer opnieuw")
-        }
-        
+        const password = document.querySelector("#wachtwoord").value
+        const email = document.querySelector("#mail").value
+        const jsonstring = { "password": password, "email": email }
+        console.log("login: ", jsonstring)
+        const respons = await axios.post(apiLogin, jsonstring, { headers: { 'Content-Type': 'application/json' } })
+        console.log('status code', respons.status)
+        access_token = await respons.data.access_token
+        console.log('access_token: ', access_token)
+        document.getElementById("loginContainer").style.display = "none"
+        document.getElementById("voegToeContainer").style.display = "block"
+        LaadAll()
+        OefeningenPage()
     }
     const LaadAll = async () => {
         await LaadOefeningen()
-        await LaadPrestaties()
     }
-    const VoegtoeOefening = async () => {
-		const Name = document.querySelector("#InstuctieNaam").value
-		const NL = document.querySelector("#Nederlandse_Instructie").value
-		const EN = document.querySelector("#Engelse_Instructie").value
-		const jsonstring = { "Name": Name, "instructie_nl": NL, "instructie_en": EN}
-		console.log("voeg toe: ", jsonstring)
-		const respons = await axios.post(apioefeningen, jsonstring,
-			{
-				headers:
-				{
-					'Content-Type': 'application/json',
-					'Accept': 'application/json',
-					'Authorization': 'Bearer ' + access_token
-				}
-			})
-			const json = await respons.data
-			access_token = json.access_token
-		console.log('status code', respons.status)
-		document.querySelector("#Name").value = ''
-		document.querySelector("#Nederlandse_Instructie").value = ''
-		document.querySelector("#Engelse_Instructie").value = ''
-		await LaadAll()
-	}
     const LaadOefeningen = async () => {
         let tabelInhoud = ''
         const response = await axios.get(apioefeningen, {
@@ -220,12 +191,12 @@
         })
         json = await response.data
         access_token = json.access_token
-        json.data.map(el => tabelInhoud += `<tr><td>${el.Name}</td><td>${el.instructie_en}</td><td>${el.instructie_nl}</td><td onclick="VerwijderOefening(${el.id})"> x </td></tr>`)
+        json.data.map(el => tabelInhoud += `<tr><td>${el.Name}</td><td>${el.instructie_en}</td><td>${el.instructie_nl}</td><td onclick="verwijder(${el.id})"> x </td></tr>`)
         document.querySelector("#tabelInhoudoefeningen").innerHTML = tabelInhoud
-    }
+    } 
     const LaadPrestaties = async () => {
         let tabelInhoud = ''
-        const response = await axios.get(apiprestaties, {
+        const response = await axios.get(apioefeningen, {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
@@ -234,52 +205,9 @@
         })
         json = await response.data
         access_token = json.access_token
-        json.data.map(el => tabelInhoud += `<tr><td>${el.datum}</td><td>${el.time_start}</td><td>${el.time_stop}</td><td>${el.user_id}</td><td>${el.oefening_id}</td><td>${el.aantal}</td><td onclick="VerwijderPrestatie(${el.id})"> x </td></tr>`)
-        document.querySelector("#tabelInhoudprestaties").innerHTML = tabelInhoud
-    }
-    const LaadUsers = async () => {
-        let tabelInhoud = ''
-        const response = await axios.get(apiusers, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': 'Bearer ' + access_token
-            }
-        })
-        json = await response.data
-        access_token = json.access_token
-        json.data.map(el => tabelInhoud += `<tr><td>${el.datum}</td><td>${el.time_start}</td><td>${el.time_stop}</td><td>${el.user_id}</td><td>${el.oefening_id}</td><td>${el.aantal}</td><td onclick="VerwijderPrestatie(${el.id})"> x </td></tr>`)
-        document.querySelector("#tabelInhoudprestaties").innerHTML = tabelInhoud
-    }
-    const VerwijderOefening = async (id) => {
-		console.log("verwijder: ", id)
-		const respons = await axios.delete(apioefeningen + id, {
-			headers: {
-				'Content-Type': 'application/json',
-				'Accept': 'application/json',
-				'Authorization': 'Bearer ' + access_token
-			}
-		})
-        console.log(respons)
-		const json = await respons.data
-		access_token = json.access_token
-		console.log('status code', respons.status)
-        LaadAll()
-	}
-    const VerwijderPrestatie = async (id) => {
-		console.log("verwijder: ", id)
-		const respons = await axios.delete(apiprestaties + id, {
-			headers: {
-				'Content-Type': 'application/json',
-				'Accept': 'application/json',
-				'Authorization': 'Bearer ' + access_token
-			}
-		})
-		const json = await respons.data
-		access_token = json.access_token
-		console.log('status code', respons.status)
-        LaadAll()
-	}  
+        json.data.map(el => tabelInhoud += `<tr><td>${el.Name}</td><td>${el.instructie_en}</td><td>${el.instructie_nl}</td><td onclick="verwijder(${el.id})"> x </td></tr>`)
+        document.querySelector("#tabelInhoudoefeningen").innerHTML = tabelInhoud
+    }  
 </script>
 
 </html>

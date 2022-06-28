@@ -17,8 +17,8 @@ class prestatieSeeder extends Seeder
     {
         DB::table('prestaties')->insert([
             'datum' => Carbon::now(),
-            'time start' => Carbon::now(),
-            'time stop' => Carbon::now(),
+            'time_start' => Carbon::now(),
+            'time_stop' => Carbon::now(),
             'user_id' => '1',
             'oefening_id'=>'1',
             'aantal'=>'5',

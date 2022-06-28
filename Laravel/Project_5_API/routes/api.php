@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PrestatieController;
+use App\Http\Controllers\prestatiesController;
 use App\Http\Controllers\OefeningenController;
 use App\Http\Controllers\AuthenticationController;
 /*
@@ -23,6 +23,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         return auth()->user();
     });
     Route::apiResource('oefeningen', OefeningenController::class);
+    Route::apiResource('prestaties', prestatiesController::class);
 
     Route::post('/logout', [AuthenticationController::class, 'logout']);
 });

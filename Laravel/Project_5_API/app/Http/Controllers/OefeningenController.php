@@ -50,19 +50,14 @@ class OefeningenController extends Controller
         ];
         return response()->json($response, 200);
     }
-    public function destroy(Request $request, oefeningen $oefening)
+    public function destroy(Request $request, oefeningen $oefening,$id)
     {
-        $request->user()->currentAccessToken()->delete();
-        $oefening->delete();
+        oefeningen::find($id)->delete();
         $response = [
             'success' => true,
             'access_token' => auth()->user()->createToken('API Token')->plainTextToken,
             'token_type' => 'Bearer'
         ];
         return response()->json($response, 200);
-    }
-    public function showpublic(oefeningen $oefeningen)
-    {
-        return $oefeningen;
     }
 }
