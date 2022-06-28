@@ -6,7 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\oefeningen;
 
 class OefeningenController extends Controller
-{
+{ 
+    public function publicindex()
+    {
+        return oefeningen::All();
+    }
     public function index()
     {
         $response = [

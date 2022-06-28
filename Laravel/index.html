@@ -90,15 +90,15 @@
                         <tr>
                             <th>naam</th>
                             <th>email</th>
-                            <th>instructie engels</th>
                         </tr>
                     </thead>
                     <tbody id="tabelInhoudusers" />
                 </table>
                 <div id="voegToeContainer">
-                    <label>instructienaam:</label><input type="text" id="Name" required /><br />
-                    <label>nederlandse instructie:</label><input type="text" id="Code" required /><br />
-                    <label>engelse instructie:</label><input type="text" id="Number" required /><br />
+                    <label>Naam:</label><input type="text" id="UserName" required /><br />
+                    <label>Email:</label><input type="text" id="Email" required /><br />
+                    <label>Wachtwoord:</label><input type="text" id="WW" required /><br />
+                    <label>Wachtwoord Confirm:</label><input type="text" id="WWC" required /><br />
                     <button onclick="VoegtoeUser()" type="button">Toevoegen</button>
                 </div>
             </div>
@@ -185,6 +185,7 @@
     const LaadAll = async () => {
         await LaadOefeningen()
         await LaadPrestaties()
+        await LaadUsers()
     }
     const VoegtoeOefening = async () => {
 		const Name = document.querySelector("#InstuctieNaam").value
@@ -204,18 +205,19 @@
 			const json = await respons.data
 			access_token = json.access_token
 		console.log('status code', respons.status)
-		document.querySelector("#Name").value = ''
+		document.querySelector("#InstuctieNaam").value = ''
 		document.querySelector("#Nederlandse_Instructie").value = ''
 		document.querySelector("#Engelse_Instructie").value = ''
 		await LaadAll()
 	}
     const VoegtoeUser = async () => {
-		const Name = document.querySelector("#InstuctieNaam").value
-		const NL = document.querySelector("#Nederlandse_Instructie").value
-		const EN = document.querySelector("#Engelse_Instructie").value
-		const jsonstring = { "Name": Name, "instructie_nl": NL, "instructie_en": EN}
+		const UserName = document.querySelector("#UserName").value
+		const Email = document.querySelector("#Email").value
+		const WW = document.querySelector("#WW").value
+		const WWC = document.querySelector("#WWC").value
+		const jsonstring = { "name": UserName, "email": Email, "password": WW,"password_confirmation":WWC}
 		console.log("voeg toe: ", jsonstring)
-		const respons = await axios.post(apioefeningen, jsonstring,
+		const respons = await axios.post(apiusers, jsonstring,
 			{
 				headers:
 				{
@@ -227,9 +229,10 @@
 			const json = await respons.data
 			access_token = json.access_token
 		console.log('status code', respons.status)
-		document.querySelector("#Name").value = ''
-		document.querySelector("#Nederlandse_Instructie").value = ''
-		document.querySelector("#Engelse_Instructie").value = ''
+		document.querySelector("#UserName").value = ''
+		document.querySelector("#Email").value = ''
+		document.querySelector("#WW").value = ''
+		document.querySelector("#WWC").value = ''
 		await LaadAll()
 	}
     const LaadOefeningen = async () => {
@@ -302,7 +305,21 @@
 		access_token = json.access_token
 		console.log('status code', respons.status)
         LaadAll()
-	}  
+	} 
+    const VerwijderUser = async (id) => {
+		console.log("verwijder: ", id)
+		const respons = await axios.delete(apiusers + id, {
+			headers: {
+				'Content-Type': 'application/json',
+				'Accept': 'application/json',
+				'Authorization': 'Bearer ' + access_token
+			}
+		})
+		const json = await respons.data
+		access_token = json.access_token
+		console.log('status code', respons.status)
+        LaadAll()
+	} 
 </script>
 
 </html>
