@@ -99,7 +99,7 @@
                     <label>instructienaam:</label><input type="text" id="Name" required /><br />
                     <label>nederlandse instructie:</label><input type="text" id="Code" required /><br />
                     <label>engelse instructie:</label><input type="text" id="Number" required /><br />
-                    <button onclick="voegToeoefening()" type="button">Toevoegen</button>
+                    <button onclick="VoegtoeUser()" type="button">Toevoegen</button>
                 </div>
             </div>
             <div id="prestaties" style="display: none;">
@@ -209,6 +209,29 @@
 		document.querySelector("#Engelse_Instructie").value = ''
 		await LaadAll()
 	}
+    const VoegtoeUser = async () => {
+		const Name = document.querySelector("#InstuctieNaam").value
+		const NL = document.querySelector("#Nederlandse_Instructie").value
+		const EN = document.querySelector("#Engelse_Instructie").value
+		const jsonstring = { "Name": Name, "instructie_nl": NL, "instructie_en": EN}
+		console.log("voeg toe: ", jsonstring)
+		const respons = await axios.post(apioefeningen, jsonstring,
+			{
+				headers:
+				{
+					'Content-Type': 'application/json',
+					'Accept': 'application/json',
+					'Authorization': 'Bearer ' + access_token
+				}
+			})
+			const json = await respons.data
+			access_token = json.access_token
+		console.log('status code', respons.status)
+		document.querySelector("#Name").value = ''
+		document.querySelector("#Nederlandse_Instructie").value = ''
+		document.querySelector("#Engelse_Instructie").value = ''
+		await LaadAll()
+	}
     const LaadOefeningen = async () => {
         let tabelInhoud = ''
         const response = await axios.get(apioefeningen, {
@@ -220,7 +243,7 @@
         })
         json = await response.data
         access_token = json.access_token
-        json.data.map(el => tabelInhoud += `<tr><td>${el.Name}</td><td>${el.instructie_en}</td><td>${el.instructie_nl}</td><td onclick="VerwijderOefening(${el.id})"> x </td></tr>`)
+        json.data.map(el => tabelInhoud += `<tr><td>${el.Name}</td><td>${el.instructie_nl}</td><td>${el.instructie_en}</td><td onclick="VerwijderOefening(${el.id})"> x </td></tr>`)
         document.querySelector("#tabelInhoudoefeningen").innerHTML = tabelInhoud
     }
     const LaadPrestaties = async () => {
@@ -248,8 +271,8 @@
         })
         json = await response.data
         access_token = json.access_token
-        json.data.map(el => tabelInhoud += `<tr><td>${el.datum}</td><td>${el.time_start}</td><td>${el.time_stop}</td><td>${el.user_id}</td><td>${el.oefening_id}</td><td>${el.aantal}</td><td onclick="VerwijderPrestatie(${el.id})"> x </td></tr>`)
-        document.querySelector("#tabelInhoudprestaties").innerHTML = tabelInhoud
+        json.data.map(el => tabelInhoud += `<tr><td>${el.name}</td><td>${el.email}</td><td onclick="VerwijderUser(${el.id})"> x </td></tr>`)
+        document.querySelector("#tabelInhoudusers").innerHTML = tabelInhoud
     }
     const VerwijderOefening = async (id) => {
 		console.log("verwijder: ", id)

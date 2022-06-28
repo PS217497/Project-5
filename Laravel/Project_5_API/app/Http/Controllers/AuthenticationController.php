@@ -6,7 +6,17 @@ use Illuminate\Http\Request;
 use App\Models\User;
 
 class AuthenticationController extends Controller
-{
+{ 
+    public function index()
+    {
+        $response = [
+            'success' => true,
+            'data'    => User::All(),
+            'access_token' => auth()->user()->createToken('API Token')->plainTextToken,
+            'token_type' => 'Bearer'
+        ];
+        return response()->json($response, 200);
+    }
     public function register(Request $request)
     {
         $attr = $request->validate([
