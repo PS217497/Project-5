@@ -18,7 +18,6 @@ export default function about({navigation}) {
                  hoevaak je de oefening moet gaan herhalen. Succes!
             </Text>
 
-            <Text></Text>
 
             <Text style={{fontSize: 24, fontWeight: 'bold'}}> Help </Text>
 
@@ -46,6 +45,11 @@ export default function about({navigation}) {
                     3: Als je persoonlijke progress van de oefeningen niet laat zien, kijk
                     eens of je bent ingelogd. Als dit niet het geval is dan wordt er geraadpleegd
                     voor hulp van de beheerders.
+            </Text>
+
+            <Text 
+            style={{fontSize: 15, margin: 10}}>
+                Versie: 1.01.1
             </Text>
 
         </View>

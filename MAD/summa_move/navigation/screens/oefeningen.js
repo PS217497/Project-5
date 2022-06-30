@@ -1,12 +1,83 @@
-import * as React from 'react';
-import {View, Text} from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import React from 'react';
+import { StyleSheet, Text, View, ActivityIndicator, FlatList, Pressable } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native'; 
+import { createStackNavigator } from '@react-navigation/stack';
 
-export default function oefeningen({navigation}) {
-    return(
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <Text
-                onPress={() => navigation.navigate('Dit is de "Oefeningen" scherm.')}
-                style={{fontSize: 26, fontWeight: 'bold'}}>Oefeningen Scherm</Text>
-        </View>
-    );
+const Stack = createStackNavigator();
+const  App = () => {
+  return (            
+    <Stack.Navigator>
+        <Stack.Screen
+        name= 'Oefeningen Screen'
+        component={LoadOefeningen}/>
+        <Stack.Screen
+        name= 'OefeningenDetails'
+        component={LoadOefeningenDetails}/>
+    </Stack.Navigator>
+  );
 }
+
+let DATA;
+
+const LoadOefeningenDetails = ({route, navigation}) => {
+    return (
+        <View style={{ flex: 1, padding: 20 }}>
+            <Text>{route.params.data.instructie_nl}</Text>
+            <Text>{i18n.t('welcome')}</Text>
+
+        </View>
+    )
+}
+const LoadOefeningen = ({route, navigation}) => {
+  const [isloading, setLoading] = React.useState(true);
+  const loadApi = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/publicoefeningen')
+      const json = await response.json()
+
+      DATA = json
+    }
+    catch(e) {
+      console.error(e)
+    }
+    finally {
+      setLoading(false)
+    }
+  }
+
+  loadApi();
+    return (
+        <View style={[styles.view]}>
+            {isloading ? <ActivityIndicator /> : (
+            <FlatList
+              data={DATA}
+              keyExtractor={({ id }, index) => id}
+              renderItem={({ item }) => (
+                <View style={[styles.infocar]}>
+                  <Pressable onPress={() => {navigation.navigate('OefeningenDetails', {data: item})}}>
+                    <Text>{item.Name}</Text>
+                  </Pressable>
+                </View>
+              )}
+            />
+          )}
+        </View>
+    )
+}
+//styling van de app
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  view: {
+    padding: 15,
+    flex:1,
+  },
+});
+
+
+export default App
