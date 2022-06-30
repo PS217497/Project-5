@@ -11,8 +11,9 @@ class OefeningenController extends Controller
     {
         return oefeningen::All();
     }
-    public function index()
+    public function index(Request $request)
     {
+        $request->user()->currentAccessToken()->delete();
         $response = [
             'success' => true,
             'data'    => oefeningen::All(),
@@ -21,8 +22,9 @@ class OefeningenController extends Controller
         ];
         return response()->json($response, 200);
     }
-    public function show(oefeningen $oefeningen)
+    public function show(Request $request,oefeningen $oefeningen)
     {
+        $request->user()->currentAccessToken()->delete();
         $response = [
             'success' => true,
             'data'    =>  $oefeningen,
