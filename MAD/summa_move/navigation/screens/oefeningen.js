@@ -1,11 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, ActivityIndicator, FlatList, Pressable } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, FlatList, Pressable, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native'; 
 import { createStackNavigator } from '@react-navigation/stack';
+import './i18n/i18n';
+import {useTranslation} from 'react-i18next';
+import { useState } from 'react';
+
 
 const Stack = createStackNavigator();
-const  App = () => {
+const  App = ({navigation,route}) => {
+
+  
+
   return (            
     <Stack.Navigator>
         <Stack.Screen
@@ -21,11 +28,25 @@ const  App = () => {
 let DATA;
 
 const LoadOefeningenDetails = ({route, navigation}) => {
+  const [langu,setlang] =useState(route.params.data.instructie_nl);
+  let lang ="en";
+  let change =route.params.data.instructie_en;
+  const changelang =()=>{
+
+    if (lang == "nl"){
+      setlang(route.params.data.instructie_nl);
+      lang = "en";
+      console.log(langu);
+    }
+    else if (lang == "en"){
+      lang = "nl";
+      setlang(route.params.data.instructie_en);
+    }
+  }
     return (
         <View style={{ flex: 1, padding: 20 }}>
-            <Text>{route.params.data.instructie_nl}</Text>
-            <Text>{i18n.t('welcome')}</Text>
-
+            <Text>{langu}</Text>
+            <Button title='vertaal' onPress={()=>changelang()}>vertaal</Button>
         </View>
     )
 }

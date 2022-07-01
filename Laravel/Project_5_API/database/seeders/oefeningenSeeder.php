@@ -16,8 +16,8 @@ class oefeningenSeeder extends Seeder
     public function run()
     {
         DB::table('oefeningen')->insert([
-            'Name' => 'sqaut',
-            'instructie_nl' => 'Sqaut:
+            'Name' => 'Sqaut',
+            'instructie_nl' => 'Squat:
             1.	Ga staan op een plek waar je genoeg ruimte om je heen hebt.
             2.	Zak vervolgens door je knieën heen tot je billen onder kniehoogte zijn.
             3.	Ga hierna weer recht staan.

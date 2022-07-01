@@ -1,0 +1,15 @@
+{
+    "translation": {
+      "homehead":"Summa Move",
+      "headabout1":"Welcome to Summa Move!",
+      "headabout2":"Help",
+      "about1":"This app is made for the students of the summa college. Summa Move wants to ensure that the students of the Summa College move more. On our app you can view the exercises screen which different exercises there are. If you click on a specific exercise, you will receive additional information about the specific exercise. For example, what the exercise is for, photos and how often you have to repeat the exercise. Good luck!",
+      "about2":"Below are a few references for help if there is a problem with the app, or other errors",
+      "about3":"1. If the app is having trouble logging in, try closing the app. Then open the app and try to login again.",
+      "about4":"2. If the exercises on the app don't load, check if you are connected to the internet connection. If not, please uninstall the app and download it again.",
+      "about5":"3. If your personal progress of the exercises does not show, check if you are logged in. If this is not the case, the administrators are consulted for help.",
+      "home":"Home",
+      "oefening":"Excercise",
+      "about":"About Us"
+    }
+  }

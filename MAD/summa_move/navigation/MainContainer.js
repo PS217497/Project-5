@@ -1,58 +1,64 @@
 import * as React from 'react';
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import oefeningen from './screens/oefeningen';
 import about from './screens/about';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import home from './screens/home';
+import './screens/i18n/i18n';
+import { useState } from 'react';
+import {useTranslation} from 'react-i18next';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-
-
-const oefeningenName = 'Oefeningen';
-const aboutName = 'About';
-const homeName = 'Home';
-
-const Tab = createBottomTabNavigator();
-
+const Tab = createMaterialBottomTabNavigator();
 
  function MainContainer(){
+    const {t, i18n} = useTranslation();
+    const [currentLanguage,setLanguage] =useState('en');
+    const changeLanguage = value => {
+    i18n
+      .changeLanguage(value)
+      .then(() => setLanguage(value))
+      .catch(err => console.log(err));
+    };
+
+
     return(
-        <NavigationContainer>
-            <Tab.Navigator
-            initialRouteName={homeName}
-            screenOptions={({route}) => ({
-                tabBarIcon: ({focused, color, size}) => {
-                    let iconName;
-                    let IconName;
-                    let rn = route.name;
-
-                    if (rn === oefeningenName) {
-                        iconName = focused ? 'fitness' : 'fitness-outline'
-                    }else if (rn === aboutName) {
-                        iconName = focused ? 'list' : 'list-outline'
-                    }else if (rn === homeName) {
-                        iconName = focused ? 'home' : 'home-outline'
-                    }
-
-                    return <Ionicons name={iconName} size={size} color={color}/>
-                    
-                },
-            })}
-            tabBarOptions={{
-                activeTintColor: '#1e90ff ',
-                inactiveTintColor: 'grey',
-                labelStyle: {paddingBottom: 10, fontSize: 10},
-                style: {padding: 10, height: 70}
-                
-            }}>
-            
-                <Tab.Screen name={homeName} component={home}/>
-                 <Tab.Screen name={oefeningenName} component={oefeningen}/>
-                <Tab.Screen name={aboutName} component={about}/>
-                
-
-            </Tab.Navigator>
+    <NavigationContainer>
+        <Tab.Navigator>
+        <Tab.Screen
+        name="home"
+        component={home}
+        options={{
+          tabBarLabel: <Text>{t('home')}{' '}</Text>,
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="home-outline" color={color} size={26} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Oefeningen"
+        component={oefeningen}
+        options={{
+          tabBarLabel: <Text>{t('oefening')}{' '}</Text>,
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="fitness-outline" color={color} size={26} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="About"
+        component={about}
+        options={{
+          tabBarLabel: <Text>{t('about')}{' '}</Text>,
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="person-outline" color={color} size={26} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
         </NavigationContainer>
     );
 }
