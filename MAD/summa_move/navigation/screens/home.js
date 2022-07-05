@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { StyleSheet, Text, Button, View, StatusBar } from 'react-native';
 import './i18n/i18n';
+import {setBeschrijving } from "./Auto";
 import {useTranslation} from 'react-i18next';
   
 
@@ -12,6 +13,7 @@ function home({navigation}) {
   const [currentLanguage,setLanguage] =useState('en');
   
   const changeLanguage = value => {
+    setBeschrijving(value);
     i18n
       .changeLanguage(value)
       .then(() => setLanguage(value))

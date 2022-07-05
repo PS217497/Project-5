@@ -1,18 +1,19 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, ActivityIndicator, FlatList, Pressable, Button } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, FlatList, Pressable, Button,RefreshControl,ScrollView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native'; 
 import { createStackNavigator } from '@react-navigation/stack';
 import './i18n/i18n';
 import {useTranslation} from 'react-i18next';
 import { useState } from 'react';
-
-
+import { getBeschrijving} from "./Auto";
+let lang ="nl";
 const Stack = createStackNavigator();
-const  App = ({navigation,route}) => {
 
-  
-
+const wait = (timeout) => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}
+const  App = ({navigation,route}) => {  
   return (            
     <Stack.Navigator>
         <Stack.Screen
@@ -28,8 +29,8 @@ const  App = ({navigation,route}) => {
 let DATA;
 
 const LoadOefeningenDetails = ({route, navigation}) => {
+  
   const [langu,setlang] =useState(route.params.data.instructie_nl);
-  let lang ="en";
   let change =route.params.data.instructie_en;
   const changelang =()=>{
 
@@ -50,13 +51,16 @@ const LoadOefeningenDetails = ({route, navigation}) => {
         </View>
     )
 }
-const LoadOefeningen = ({route, navigation}) => {
+const LoadOefeningen = ({navigation}) => {
+  getBeschrijving((langu) => {
+    console.log("got:" + langu)
+    lang = langu;
+});
   const [isloading, setLoading] = React.useState(true);
   const loadApi = async () => {
     try {
       const response = await fetch('http://127.0.0.1:8000/api/publicoefeningen')
       const json = await response.json()
-
       DATA = json
     }
     catch(e) {
@@ -66,9 +70,34 @@ const LoadOefeningen = ({route, navigation}) => {
       setLoading(false)
     }
   }
-
   loadApi();
-    return (
+    if(lang == "en"){
+      return (
+       
+        
+        <View style={[styles.view]}>
+            {isloading ? <ActivityIndicator /> : (
+              
+            <FlatList
+              data={DATA}
+              keyExtractor={({ id }, index) => id}
+              renderItem={({ item }) => (
+                <View style={[styles.infocar]}>
+                  <Pressable onPress={() => {navigation.navigate('OefeningenDetails', {data: item})}}>
+                    <Text>{item.Name_en}</Text>
+                  </Pressable>
+                  
+                </View>
+                
+              )}
+            />
+          )}
+        </View>
+
+    )
+    }
+    else if (lang == "nl"){
+      return (
         <View style={[styles.view]}>
             {isloading ? <ActivityIndicator /> : (
             <FlatList
@@ -77,14 +106,17 @@ const LoadOefeningen = ({route, navigation}) => {
               renderItem={({ item }) => (
                 <View style={[styles.infocar]}>
                   <Pressable onPress={() => {navigation.navigate('OefeningenDetails', {data: item})}}>
-                    <Text>{item.Name}</Text>
+                    <Text>{item.Name_nl}</Text>
                   </Pressable>
                 </View>
               )}
             />
           )}
+          <Button  style={[styles.btnchng]} title='vertaal' onPress={()=>changelang()}>vertaal</Button>
+  
         </View>
-    )
+    ) 
+  }
 }
 //styling van de app
 const styles = StyleSheet.create({
@@ -97,6 +129,11 @@ const styles = StyleSheet.create({
   view: {
     padding: 15,
     flex:1,
+  },
+  btnchng: {
+    backgroundColor:"black",
+    width:"100%",
+    height:20
   },
 });
 

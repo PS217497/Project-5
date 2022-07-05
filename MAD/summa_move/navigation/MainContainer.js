@@ -46,7 +46,7 @@ const Tab = createMaterialBottomTabNavigator();
           tabBarIcon: ({ color }) => (
             <Ionicons name="fitness-outline" color={color} size={26} />
           ),
-        }}
+        }}  
       />
       <Tab.Screen
         name="About"

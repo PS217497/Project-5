@@ -16,7 +16,8 @@ class oefeningenSeeder extends Seeder
     public function run()
     {
         DB::table('oefeningen')->insert([
-            'Name' => 'Sqaut',
+            'Name_nl' => 'Sqaut',
+            'Name_en' => 'Sqaut',
             'instructie_nl' => 'Squat:
             1.	Ga staan op een plek waar je genoeg ruimte om je heen hebt.
             2.	Zak vervolgens door je knieën heen tot je billen onder kniehoogte zijn.
@@ -28,7 +29,8 @@ class oefeningenSeeder extends Seeder
             3.	Then stand up straight again.4.	Repeat steps 2 and 3 15 times.',
         ]);
         DB::table('oefeningen')->insert([
-            'Name' => 'push up',
+            'Name_nl' => 'push up',
+            'Name_en' => 'push up',
             'instructie_nl' => 'Push-up: 
             1.	Ga op je buik liggen.
             2.	Zet vervolgens je handen neer op de grond op schouderhoogte.
@@ -43,7 +45,8 @@ class oefeningenSeeder extends Seeder
             5.	Repeat steps 3 and 4 10 times.',
         ]);
         DB::table('oefeningen')->insert([
-            'Name' => 'Dip',
+            'Name_nl' => 'Dip',
+            'Name_en' => 'Dip',
             'instructie_nl' => 'Dip:
             1.	Pak 2 stoelen.
             2.	Zet de stoelen langs je neer zodat deze met de rug naar je toe staan.
@@ -58,7 +61,8 @@ class oefeningenSeeder extends Seeder
             5.	Repeat steps 3 and 4 10 times.",
         ]);
         DB::table('oefeningen')->insert([
-            'Name' => 'Plank',
+            'Name_nl' => 'Plank',
+            'Name_en' => 'Plank',
             'instructie_nl' => 'Plank:
             1.	Ga op je buik liggen.
             2.	Leg je onderarmen op de grond.
@@ -71,7 +75,8 @@ class oefeningenSeeder extends Seeder
             4.	Now keep this up for 30 sec.",
         ]);
         DB::table('oefeningen')->insert([
-            'Name' => 'Paardentrap',
+            'Name_nl' => 'Paardentrap',
+            'Name_en' => 'donkey kicks',
             'instructie_nl' => 'Paardentrap:
             1. Ga op handen en knieën zitten
             2. Strek je linkerbeen naar achter tot deze recht is.
@@ -88,7 +93,8 @@ class oefeningenSeeder extends Seeder
             6.	Now repeat these steps 10 times so that you have stretched your leg 20 times.",
         ]);
         DB::table('oefeningen')->insert([
-            'Name' => 'Mountain climber',
+            'Name_nl' => 'Mountain climber',
+            'Name_en' => 'Mountain climber',
             'instructie_nl' => 'Mountain climber:
             1.	Ga op je buik liggen.
             2.	Zet je handen op de grond neer en strek je armen.
@@ -109,7 +115,8 @@ class oefeningenSeeder extends Seeder
             8.	Now repeat these steps 10 times.",
         ]);
         DB::table('oefeningen')->insert([
-            'Name' => 'Burpee',
+            'Name_nl' => 'Burpee',
+            'Name_en' => 'Burpee',
             'instructie_nl' => 'Burpee:1. Ga staan op een plek waar je genoeg ruimte om je heen hebt.
             2. Spring in de lucht met je armen om hoog.
             3. Ga nu door je knieën en ga staan in push up houding.
@@ -129,7 +136,8 @@ class oefeningenSeeder extends Seeder
             8.	Now repeat 15 times.",
         ]);
         DB::table('oefeningen')->insert([
-            'Name' => 'Lunge',
+            'Name_nl' => 'Lunge',
+            'Name_en' => 'Lunge',
             'instructie_nl' => 'Lunge:
             1. Ga recht staan.
             2. En zet je rechtervoet naar voren toe en zorg dat deze in een 90 graden hoek staat.
@@ -146,7 +154,8 @@ class oefeningenSeeder extends Seeder
             6.	Now repeat this 10 times.",
         ]);
         DB::table('oefeningen')->insert([
-            'Name' => 'Wall sit',
+            'Name_nl' => 'Wall sit',
+            'Name_en' => 'Wall sit',
             'instructie_nl' => 'Wall sit:
              1. Ga staan tegen de muur.
             2. Zorg ervoor dat je benen in een 90 graden hoek staat.
@@ -159,7 +168,8 @@ class oefeningenSeeder extends Seeder
             4.	And make sure you keep this up for 30 seconds now.",
         ]);
         DB::table('oefeningen')->insert([
-            'Name' => 'Crunch',
+            'Name_nl' => 'Crunch',
+            'Name_en' => 'Crunch',
             'instructie_nl' => 'Crunch:1. Ga op je rug liggen.
             2. En zet je voeten recht op de grond en je benen een beetje gebogen.
             3. Leg je handen onder je hoofd.
