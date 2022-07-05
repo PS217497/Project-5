@@ -10,9 +10,6 @@ import { getBeschrijving} from "./Auto";
 let lang ="nl";
 const Stack = createStackNavigator();
 
-const wait = (timeout) => {
-  return new Promise(resolve => setTimeout(resolve, timeout));
-}
 const  App = ({navigation,route}) => {  
   return (            
     <Stack.Navigator>
@@ -29,11 +26,9 @@ const  App = ({navigation,route}) => {
 let DATA;
 
 const LoadOefeningenDetails = ({route, navigation}) => {
-  
   const [langu,setlang] =useState(route.params.data.instructie_nl);
   let change =route.params.data.instructie_en;
   const changelang =()=>{
-
     if (lang == "nl"){
       setlang(route.params.data.instructie_nl);
       lang = "en";
@@ -73,8 +68,6 @@ const LoadOefeningen = ({navigation}) => {
   loadApi();
     if(lang == "en"){
       return (
-       
-        
         <View style={[styles.view]}>
             {isloading ? <ActivityIndicator /> : (
               
@@ -86,14 +79,11 @@ const LoadOefeningen = ({navigation}) => {
                   <Pressable onPress={() => {navigation.navigate('OefeningenDetails', {data: item})}}>
                     <Text>{item.Name_en}</Text>
                   </Pressable>
-                  
                 </View>
-                
               )}
             />
           )}
         </View>
-
     )
     }
     else if (lang == "nl"){
@@ -113,7 +103,6 @@ const LoadOefeningen = ({navigation}) => {
             />
           )}
           <Button  style={[styles.btnchng]} title='vertaal' onPress={()=>changelang()}>vertaal</Button>
-  
         </View>
     ) 
   }
