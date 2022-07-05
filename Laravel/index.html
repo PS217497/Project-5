@@ -70,7 +70,8 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th>instuctienaam</th>
+                            <th>instuctienaam nederlands</th>
+                            <th>instuctienaam engels</th>
                             <th>instructie nederlands</th>
                             <th>instructie engels</th>
                         </tr>
@@ -78,7 +79,8 @@
                     <tbody id="tabelInhoudoefeningen" />
                 </table>
                 <div id="voegToeContainer">
-                    <label>instructienaam:</label><input type="text" id="InstuctieNaam" required /><br />
+                    <label>instructienaam nl:</label><input type="text" id="InstuctieNaam_nl" required /><br />
+                    <label>instructienaam en:</label><input type="text" id="InstuctieNaam_en" required /><br />
                     <label>nederlandse instructie:</label><input type="text" id="Nederlandse_Instructie" required /><br />
                     <label>engelse instructie:</label><input type="text" id="Engelse_Instructie" required /><br />
                     <button onclick="VoegtoeOefening()" type="button">Toevoegen</button>
@@ -188,10 +190,11 @@
         await LaadUsers()
     }
     const VoegtoeOefening = async () => {
-		const Name = document.querySelector("#InstuctieNaam").value
+		const Name_nl = document.querySelector("#InstuctieNaam_nl").value
+		const Name_en = document.querySelector("#InstuctieNaam_en").value
 		const NL = document.querySelector("#Nederlandse_Instructie").value
 		const EN = document.querySelector("#Engelse_Instructie").value
-		const jsonstring = { "Name": Name, "instructie_nl": NL, "instructie_en": EN}
+		const jsonstring = { "Name_nl": Name_nl, "Name_en": Name_en, "instructie_nl": NL, "instructie_en": EN}
 		console.log("voeg toe: ", jsonstring)
 		const respons = await axios.post(apioefeningen, jsonstring,
 			{
@@ -205,7 +208,8 @@
 			const json = await respons.data
 			access_token = json.access_token
 		console.log('status code', respons.status)
-		document.querySelector("#InstuctieNaam").value = ''
+		document.querySelector("#InstuctieNaam_nl").value = ''
+		document.querySelector("#InstuctieNaam_en").value = ''
 		document.querySelector("#Nederlandse_Instructie").value = ''
 		document.querySelector("#Engelse_Instructie").value = ''
 		await LaadAll()
@@ -246,7 +250,7 @@
         })
         json = await response.data
         access_token = json.access_token
-        json.data.map(el => tabelInhoud += `<tr><td>${el.Name}</td><td>${el.instructie_nl}</td><td>${el.instructie_en}</td><td onclick="VerwijderOefening(${el.id})"> x </td></tr>`)
+        json.data.map(el => tabelInhoud += `<tr><td>${el.Name_nl}</td><td>${el.Name_en}</td><td>${el.instructie_nl}</td><td>${el.instructie_en}</td><td onclick="VerwijderOefening(${el.id})"> x </td></tr>`)
         document.querySelector("#tabelInhoudoefeningen").innerHTML = tabelInhoud
     }
     const LaadPrestaties = async () => {

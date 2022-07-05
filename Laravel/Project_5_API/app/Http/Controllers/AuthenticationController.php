@@ -49,6 +49,7 @@ class AuthenticationController extends Controller
         ];
         return response()->json($response, 200);
     }
+
     public function register(Request $request)
     {
         $attr = $request->validate([

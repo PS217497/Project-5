@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { getBeschrijving} from "./Auto";
 let lang ="nl";
 const Stack = createStackNavigator();
-
+//stack menu
 const  App = ({navigation,route}) => {  
   return (            
     <Stack.Navigator>
@@ -24,7 +24,7 @@ const  App = ({navigation,route}) => {
 }
 
 let DATA;
-
+//hier word de uitleg ingeleden van de oefeningen
 const LoadOefeningenDetails = ({route, navigation}) => {
   const [langu,setlang] =useState(route.params.data.instructie_nl);
   let change =route.params.data.instructie_en;
@@ -46,6 +46,7 @@ const LoadOefeningenDetails = ({route, navigation}) => {
         </View>
     )
 }
+//hier worden de oefeningnamen ingeladen met vertaling
 const LoadOefeningen = ({navigation}) => {
   getBeschrijving((langu) => {
     console.log("got:" + langu)
@@ -102,7 +103,6 @@ const LoadOefeningen = ({navigation}) => {
               )}
             />
           )}
-          <Button  style={[styles.btnchng]} title='vertaal' onPress={()=>changelang()}>vertaal</Button>
         </View>
     ) 
   }

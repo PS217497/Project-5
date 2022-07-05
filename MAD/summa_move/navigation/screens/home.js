@@ -17,7 +17,7 @@ function home({navigation}) {
     i18n
       .changeLanguage(value)
       .then(() => setLanguage(value))
-      .catch(err => console.log(err));
+      .catch(err => console.log(err));  
   };
 
     
